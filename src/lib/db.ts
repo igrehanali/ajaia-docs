@@ -20,9 +20,11 @@ function createClient() {
   const isLocal = /localhost|127\.0\.0\.1/.test(url);
   return postgres(url, {
     ssl: isLocal ? false : "require",
-    max: 5,
+    // PGlite (local, no Docker) accepts one connection at a time, so PG_MAX=1 there.
+    max: Number(process.env.PG_MAX ?? 5),
     idle_timeout: 20,
     prepare: false,
+    onnotice: () => {},
   });
 }
 

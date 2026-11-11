@@ -6,22 +6,42 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test": "vitest run",
+    "db:local": "node scripts/local-db.mjs",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "react": "19.1.0",
-    "react-dom": "19.1.0",
-    "next": "15.5.4"
+    "@tiptap/extension-placeholder": "^2.11.5",
+    "@tiptap/extension-underline": "^2.11.5",
+    "@tiptap/pm": "^2.11.5",
+    "@tiptap/react": "^2.11.5",
+    "@tiptap/starter-kit": "^2.11.5",
+    "mammoth": "^1.9.0",
+    "marked": "^15.0.7",
+    "next": "^15.5.29",
+    "postgres": "^3.4.5",
+    "react": "^19.1.10",
+    "react-dom": "^19.1.10",
+    "sanitize-html": "^2.14.0",
+    "zod": "^3.24.2"
+  },
+  "overrides": {
+    "rollup": "npm:@rollup/wasm-node@4.34.9"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@electric-sql/pglite": "^0.3.7",
+    "@electric-sql/pglite-socket": "^0.0.12",
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4",
+    "@types/sanitize-html": "^2.13.0",
     "eslint": "^9",
-    "eslint-config-next": "15.5.4",
-    "@eslint/eslintrc": "^3"
+    "eslint-config-next": "^15.5.29",
+    "tailwindcss": "^4",
+    "typescript": "^5",
+    "vitest": "^3.0.8"
   }
 }
