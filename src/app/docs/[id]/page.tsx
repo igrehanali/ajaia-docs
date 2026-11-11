@@ -13,15 +13,18 @@ export default async function DocPage({ params }: { params: Promise<{ id: string
   const found = await getDocumentForUser(id, user.id);
   if (!found) notFound();
 
+  const users = await listUsers();
   return (
     <>
-      <TopBar user={user} users={await listUsers()} />
+      <TopBar user={user} users={users} />
       <DocEditor
         id={found.doc.id}
         initialTitle={found.doc.title}
         initialHtml={found.doc.content_html}
         initialUpdatedAt={new Date(found.doc.updated_at).toISOString()}
         role={found.role}
+        users={users}
+        currentUserId={user.id}
       />
     </>
   );

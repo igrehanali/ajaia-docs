@@ -8,16 +8,16 @@ A lightweight collaborative document editor: create, edit (rich text), import fi
 
 | User | Email | Seed data |
 |---|---|---|
-| Alice Khan | alice@ajaia.test | Owns "Welcome to Ajaia Docs" |
-| Bob Smith | bob@ajaia.test | Has **edit** access to the welcome doc |
-| Carol Diaz | carol@ajaia.test | Nothing shared yet – use her to test sharing |
+| Sophia Carter | sophia@ajaia.test | Owns "Welcome to Ajaia Docs" |
+| Liam Brooks | liam@ajaia.test | Has **edit** access to the welcome doc |
+| Maya Patel | maya@ajaia.test | Nothing shared yet – use her to test sharing |
 
 ## What works
 
 - **Documents:** create, rename (click the title), edit in the browser, autosave (~0.8 s after you stop typing), reopen, delete (owner).
 - **Formatting:** bold, italic, underline, H1/H2/H3, bulleted and numbered lists, quotes, undo/redo, keyboard shortcuts.
 - **File upload:** upload a **.txt, .md or .docx** file (max 2 MB) from the dashboard → it becomes a new editable document. Other file types are rejected with a clear message.
-- **Sharing:** the owner shares by email as **Can edit** or **View only**, can change or remove access. The dashboard separates **My documents** and **Shared with me**; viewers get a read-only editor.
+- **Sharing:** the owner picks a person from a dropdown (photo, name, email) and shares as **Can edit** or **View only**, can change or remove access. The dashboard separates **My documents** and **Shared with me**; viewers get a read-only editor.
 - **Persistence:** Postgres. Content is stored as sanitized HTML, so formatting survives refresh.
 - **Safety nets:** server-side validation (zod), HTML sanitizing on every save and import, access checks on every API route, and a conflict check (HTTP 409 + "Reload") if someone else saved the document since you opened it.
 - **Stretch:** export any document as Markdown.

@@ -9,6 +9,7 @@ import Underline from "@tiptap/extension-underline";
 import Placeholder from "@tiptap/extension-placeholder";
 import Toolbar from "./Toolbar";
 import SharePanel from "./SharePanel";
+import type { User } from "@/lib/auth";
 
 type Role = "owner" | "editor" | "viewer";
 type SaveState = "saved" | "dirty" | "saving" | "error" | "conflict";
@@ -21,6 +22,8 @@ export default function DocEditor(props: {
   initialHtml: string;
   initialUpdatedAt: string;
   role: Role;
+  users: User[];
+  currentUserId: string;
 }) {
   const { id, role } = props;
   const router = useRouter();
@@ -130,6 +133,8 @@ export default function DocEditor(props: {
     } else setMessage((await res.json().catch(() => null))?.error ?? "Couldn't delete.");
   }
 
+  const closeShare = useCallback(() => setShowShare(false), []);
+
   const statusText: Record<SaveState, string> = {
     saved: "All changes saved",
     dirty: "Unsaved changes",
@@ -227,7 +232,7 @@ export default function DocEditor(props: {
         <EditorContent editor={editor} />
       </article>
 
-      {showShare && <SharePanel docId={id} onClose={() => setShowShare(false)} />}
+      {showShare && <SharePanel docId={id} users={props.users} currentUserId={props.currentUserId} onClose={closeShare} />}
     </main>
   );
 }

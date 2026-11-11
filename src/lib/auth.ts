@@ -14,6 +14,7 @@ export interface User {
   name: string;
   email: string;
   color: string;
+  avatar: string | null;
 }
 
 export async function getCurrentUser(): Promise<User | null> {
@@ -21,11 +22,11 @@ export async function getCurrentUser(): Promise<User | null> {
   const uid = jar.get(SESSION_COOKIE)?.value;
   if (!uid) return null;
   await ensureSchema();
-  const rows = await sql()<User[]>`SELECT id, name, email, color FROM users WHERE id = ${uid}`;
+  const rows = await sql()<User[]>`SELECT id, name, email, color, avatar FROM users WHERE id = ${uid}`;
   return rows[0] ?? null;
 }
 
 export async function listUsers(): Promise<User[]> {
   await ensureSchema();
-  return sql()<User[]>`SELECT id, name, email, color FROM users ORDER BY name`;
+  return sql()<User[]>`SELECT id, name, email, color, avatar FROM users ORDER BY name`;
 }

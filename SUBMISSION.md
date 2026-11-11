@@ -13,16 +13,16 @@ Candidate: Muhammad Rehan Ali
 
 No passwords: pick a user on the sign-in screen and switch from the top bar.
 
-- alice@ajaia.test – owns "Welcome to Ajaia Docs"
-- bob@ajaia.test – can edit Alice's welcome doc
-- carol@ajaia.test – nothing shared yet; share something with her to test view-only
+- sophia@ajaia.test – owns "Welcome to Ajaia Docs"
+- liam@ajaia.test – can edit Sophia's welcome doc
+- maya@ajaia.test – nothing shared yet; share something with her to test view-only
 
 ## Suggested 2-minute review path
 
-1. Sign in as **Alice** → open "Welcome to Ajaia Docs" → format some text, then reload (it persists).
-2. **Share** → add `carol@ajaia.test` as **View only**.
-3. Switch to **Carol** → "Shared with me" → open it (read-only, banner shown).
-4. Switch to **Bob** → edit the same doc (editor access).
+1. Sign in as **Sophia** → open "Welcome to Ajaia Docs" → format some text, then reload (it persists).
+2. **Share** → pick **Maya Patel** from the people dropdown → **View only**.
+3. Switch to **Maya** → "Shared with me" → open it (read-only, banner shown).
+4. Switch to **Liam** → edit the same doc (editor access).
 5. Dashboard → **Upload file** → a .md, .txt or .docx becomes a new document. Try a .png to see the rejection message.
 6. **Export .md** from any document.
 

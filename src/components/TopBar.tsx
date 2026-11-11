@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { User } from "@/lib/auth";
+import Avatar from "./Avatar";
 
 export default function TopBar({ user, users }: { user: User; users: User[] }) {
   const router = useRouter();
@@ -31,13 +32,7 @@ export default function TopBar({ user, users }: { user: User; users: User[] }) {
           Ajaia Docs
         </Link>
         <div className="ml-auto flex items-center gap-2">
-          <span
-            className="flex h-7 w-7 items-center justify-center rounded-full text-xs font-semibold text-white"
-            style={{ background: user.color }}
-            aria-hidden
-          >
-            {user.name[0]}
-          </span>
+          <Avatar user={user} size={28} />
           <label className="sr-only" htmlFor="user-switch">
             Signed in as
           </label>

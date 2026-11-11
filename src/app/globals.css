@@ -103,6 +103,20 @@ select:disabled {
 .backdrop {
   animation: fade 200ms ease both;
 }
+/* Dropdown menus grow out of their trigger. */
+@keyframes menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.97);
+  }
+}
+.menu {
+  transform-origin: top center;
+  animation: menu-in 220ms var(--ease-out) both;
+}
+.chevron {
+  transition: transform 300ms var(--ease-out);
+}
 .sheet {
   animation: pop 320ms var(--ease-spring) both;
 }
@@ -125,7 +139,8 @@ select:disabled {
 @media (prefers-reduced-motion: reduce) {
   .press,
   .card,
-  .row .chev {
+  .row .chev,
+  .chevron {
     transition: none;
   }
   .press:active,
@@ -136,6 +151,7 @@ select:disabled {
   .rise,
   .backdrop,
   .sheet,
+  .menu,
   .saving-dot {
     animation: none;
   }

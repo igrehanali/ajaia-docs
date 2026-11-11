@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import type { User } from "@/lib/auth";
+import Avatar from "./Avatar";
 
 export default function SignIn({ users }: { users: User[] }) {
   const router = useRouter();
@@ -39,12 +40,7 @@ export default function SignIn({ users }: { users: User[] }) {
               disabled={pending !== null}
               className="card group flex w-full items-center gap-3 rounded-xl border border-gray-200 bg-white px-4 py-3 text-left shadow-sm hover:border-gray-300 disabled:opacity-60"
             >
-              <span
-                className="flex h-9 w-9 items-center justify-center rounded-full text-sm font-semibold text-white"
-                style={{ background: u.color }}
-              >
-                {u.name[0]}
-              </span>
+              <Avatar user={u} size={40} />
               <span className="flex-1">
                 <span className="block font-medium">{u.name}</span>
                 <span className="block text-sm text-gray-500">{u.email}</span>

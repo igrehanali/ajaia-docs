@@ -33,18 +33,20 @@ export function sql() {
   return globalThis.__sql;
 }
 
+// Ids stay stable so existing documents keep their owners; names, emails and photos can change.
+// Avatars are small (72px) stock portraits from randomuser.me; the UI falls back to an initial if one fails to load.
 export const SEED_USERS = [
-  { id: "u_alice", name: "Alice Khan", email: "alice@ajaia.test", color: "#2563eb" },
-  { id: "u_bob", name: "Bob Smith", email: "bob@ajaia.test", color: "#16a34a" },
-  { id: "u_carol", name: "Carol Diaz", email: "carol@ajaia.test", color: "#db2777" },
+  { id: "u_alice", name: "Sophia Carter", email: "sophia@ajaia.test", color: "#2563eb", avatar: "https://randomuser.me/api/portraits/med/women/44.jpg" },
+  { id: "u_bob", name: "Liam Brooks", email: "liam@ajaia.test", color: "#16a34a", avatar: "https://randomuser.me/api/portraits/med/men/32.jpg" },
+  { id: "u_carol", name: "Maya Patel", email: "maya@ajaia.test", color: "#db2777", avatar: "https://randomuser.me/api/portraits/med/women/68.jpg" },
 ] as const;
 
 const WELCOME_DOC_ID = "00000000-0000-4000-8000-000000000001";
 
 const WELCOME_HTML = `<h1>Welcome to Ajaia Docs</h1>
-<p>This document is owned by <strong>Alice</strong> and shared with <strong>Bob</strong> as an <em>editor</em>.</p>
+<p>This document is owned by <strong>Sophia</strong> and shared with <strong>Liam</strong> as an <em>editor</em>.</p>
 <h2>Try this</h2>
-<ul><li>Format text with <strong>bold</strong>, <em>italic</em> and <u>underline</u></li><li>Add headings and lists from the toolbar</li><li>Share the document with Carol from the Share button</li></ul>
+<ul><li>Format text with <strong>bold</strong>, <em>italic</em> and <u>underline</u></li><li>Add headings and lists from the toolbar</li><li>Share the document with Maya from the Share button</li></ul>
 <ol><li>Switch user (top right)</li><li>Open “Shared with me”</li><li>See the edit or view-only experience</li></ol>`;
 
 /** Creates tables and seed data once per server process. Idempotent. */
@@ -59,6 +61,7 @@ export function ensureSchema(): Promise<void> {
           email TEXT NOT NULL UNIQUE,
           color TEXT NOT NULL
         )`;
+      await db`ALTER TABLE users ADD COLUMN IF NOT EXISTS avatar TEXT`;
       await db`
         CREATE TABLE IF NOT EXISTS documents (
           id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -81,14 +84,19 @@ export function ensureSchema(): Promise<void> {
 
       for (const u of SEED_USERS) {
         await db`
-          INSERT INTO users (id, name, email, color)
-          VALUES (${u.id}, ${u.name}, ${u.email}, ${u.color})
-          ON CONFLICT (id) DO NOTHING`;
+          INSERT INTO users (id, name, email, color, avatar)
+          VALUES (${u.id}, ${u.name}, ${u.email}, ${u.color}, ${u.avatar})
+          ON CONFLICT (id) DO UPDATE
+            SET name = EXCLUDED.name, email = EXCLUDED.email, color = EXCLUDED.color, avatar = EXCLUDED.avatar`;
       }
       await db`
         INSERT INTO documents (id, owner_id, title, content_html)
         VALUES (${WELCOME_DOC_ID}, 'u_alice', 'Welcome to Ajaia Docs', ${WELCOME_HTML})
         ON CONFLICT (id) DO NOTHING`;
+      // Databases seeded before the rename still have the old names in the untouched welcome text.
+      await db`
+        UPDATE documents SET content_html = ${WELCOME_HTML}
+        WHERE id = ${WELCOME_DOC_ID} AND content_html LIKE '%<strong>Alice</strong>%'`;
       await db`
         INSERT INTO document_shares (document_id, user_id, role)
         VALUES (${WELCOME_DOC_ID}, 'u_bob', 'editor')
