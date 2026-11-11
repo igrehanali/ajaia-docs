@@ -16,21 +16,128 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Press feedback: quick scale-down, springy release. */
-.press {
-  transition: transform 160ms cubic-bezier(0.34, 1.56, 0.64, 1), background-color 120ms ease,
-    box-shadow 120ms ease;
+/* Tailwind v4 resets buttons to cursor: default. Everything clickable gets a pointer. */
+button:not(:disabled),
+[role="button"],
+select:not(:disabled),
+summary,
+a[href] {
+  cursor: pointer;
 }
-.press:active {
+button:disabled,
+select:disabled {
+  cursor: not-allowed;
+}
+
+/* One easing for the whole app: fast start, soft settle (close to an Apple spring with no bounce). */
+:root {
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+/* Press feedback: quick scale-down on press, springy release. */
+.press {
+  transition: transform 220ms var(--ease-spring), background-color 150ms ease, border-color 150ms ease,
+    box-shadow 200ms var(--ease-out), opacity 150ms ease;
+}
+.press:active:not(:disabled) {
   transform: scale(0.97);
-  transition-duration: 60ms;
+  transition-duration: 80ms;
+}
+
+/* Cards: a 1px lift and a softer, wider shadow on hover. Rows press in slightly less than buttons. */
+.card {
+  transition: transform 260ms var(--ease-out), box-shadow 260ms var(--ease-out), border-color 200ms ease,
+    background-color 150ms ease;
+}
+@media (hover: hover) {
+  .card:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 1px 2px rgb(17 24 39 / 0.04), 0 8px 24px -8px rgb(17 24 39 / 0.12);
+  }
+}
+.card:active:not(:disabled) {
+  transform: scale(0.985);
+  transition-duration: 90ms;
+}
+
+/* Document rows: the chevron slides in on hover so the row reads as a link. */
+.row .chev {
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity 180ms ease, transform 260ms var(--ease-out);
+}
+.row:hover .chev,
+.row:focus-visible .chev {
+  opacity: 1;
+  transform: none;
+}
+.row:active {
+  background-color: rgb(243 244 246);
+}
+
+/* Entrances: content rises 6px and fades in, list items staggered by --i. */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+.rise {
+  animation: rise 420ms var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 35ms);
+}
+
+/* Sheet: the backdrop fades, the dialog scales up from 96%. */
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.96);
+  }
+}
+.backdrop {
+  animation: fade 200ms ease both;
+}
+.sheet {
+  animation: pop 320ms var(--ease-spring) both;
+}
+
+/* Save indicator dot breathes while saving. */
+@keyframes breathe {
+  50% {
+    opacity: 0.35;
+  }
+}
+.saving-dot {
+  animation: breathe 1s ease-in-out infinite;
+}
+
+:focus-visible {
+  outline: 2px solid rgb(37 99 235 / 0.55);
+  outline-offset: 2px;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .press,
-  .press:active {
+  .card,
+  .row .chev {
     transition: none;
-    transform: none;
+  }
+  .press:active,
+  .card:hover,
+  .card:active {
+    transform: none !important;
+  }
+  .rise,
+  .backdrop,
+  .sheet,
+  .saving-dot {
+    animation: none;
   }
 }
 

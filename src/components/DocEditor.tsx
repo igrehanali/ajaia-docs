@@ -157,8 +157,22 @@ export default function DocEditor(props: {
           />
           <span
             aria-live="polite"
-            className={`text-xs ${saveState === "error" || saveState === "conflict" ? "text-red-600" : "text-gray-500"}`}
+            className={`flex items-center gap-1.5 text-xs ${saveState === "error" || saveState === "conflict" ? "text-red-600" : "text-gray-500"}`}
           >
+            {editable && (
+              <span
+                aria-hidden
+                className={`h-1.5 w-1.5 rounded-full transition-colors duration-300 ${
+                  saveState === "saved"
+                    ? "bg-green-500"
+                    : saveState === "saving"
+                      ? "saving-dot bg-blue-500"
+                      : saveState === "dirty"
+                        ? "bg-gray-400"
+                        : "bg-red-500"
+                }`}
+              />
+            )}
             {editable ? statusText[saveState] : "View only"}
           </span>
           <a
@@ -209,7 +223,7 @@ export default function DocEditor(props: {
         </div>
       )}
 
-      <article className="mt-6 rounded-2xl border border-gray-200 bg-white px-8 py-10 shadow-sm sm:px-14">
+      <article className="rise mt-6 rounded-2xl border border-gray-200 bg-white px-8 py-10 shadow-sm sm:px-14">
         <EditorContent editor={editor} />
       </article>
 

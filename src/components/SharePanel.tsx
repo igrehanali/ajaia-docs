@@ -26,6 +26,13 @@ export default function SharePanel({ docId, onClose }: { docId: string; onClose:
       .catch((e) => setError(e.message ?? "Couldn't load sharing."));
   }, [docId]);
 
+  // Escape closes the dialog, like a native sheet.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
   async function call(method: "POST" | "DELETE", payload: object) {
     setBusy(true);
     setError(null);
@@ -50,12 +57,12 @@ export default function SharePanel({ docId, onClose }: { docId: string; onClose:
   }
 
   return (
-    <div className="fixed inset-0 z-30 flex items-start justify-center bg-black/20 p-4 pt-24" onClick={onClose}>
+    <div className="backdrop fixed inset-0 z-30 flex items-start justify-center bg-black/25 p-4 pt-24 backdrop-blur-[2px]" onClick={onClose}>
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby="share-title"
-        className="w-full max-w-md rounded-2xl bg-white p-5 shadow-xl"
+        className="sheet w-full max-w-md rounded-2xl bg-white p-5 shadow-2xl ring-1 ring-black/5"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center">
@@ -74,7 +81,8 @@ export default function SharePanel({ docId, onClose }: { docId: string; onClose:
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="bob@ajaia.test"
-            className="min-w-0 flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm"
+            autoFocus
+            className="min-w-0 flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm transition-shadow focus:border-blue-400 focus:shadow-[0_0_0_3px_rgb(37_99_235/0.15)] focus-visible:outline-none"
             aria-label="Email of the person to share with"
           />
           <select
@@ -88,7 +96,7 @@ export default function SharePanel({ docId, onClose }: { docId: string; onClose:
           </select>
           <button
             disabled={busy}
-            className="press rounded-lg bg-blue-600 px-3 py-2 text-sm font-medium text-white disabled:opacity-60"
+            className="press rounded-lg bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-60"
           >
             Share
           </button>

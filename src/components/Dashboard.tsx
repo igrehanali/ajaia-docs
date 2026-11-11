@@ -30,13 +30,16 @@ const roleStyle = {
 
 function DocList({ docs, empty, showOwner }: { docs: Doc[]; empty: string; showOwner?: boolean }) {
   if (!docs.length) {
-    return <p className="rounded-xl border border-dashed border-gray-300 p-6 text-sm text-gray-500">{empty}</p>;
+    return <p className="rise rounded-xl border border-dashed border-gray-300 p-6 text-sm text-gray-500">{empty}</p>;
   }
   return (
     <ul className="divide-y divide-gray-100 overflow-hidden rounded-xl border border-gray-200 bg-white">
-      {docs.map((d) => (
-        <li key={d.id}>
-          <Link href={`/docs/${d.id}`} className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50">
+      {docs.map((d, i) => (
+        <li key={d.id} className="rise" style={{ "--i": i } as React.CSSProperties}>
+          <Link
+            href={`/docs/${d.id}`}
+            className="row flex items-center gap-3 px-4 py-3 transition-colors duration-150 hover:bg-gray-50 focus-visible:bg-gray-50"
+          >
             <span aria-hidden className="text-lg">📄</span>
             <span className="min-w-0 flex-1">
               <span className="block truncate font-medium">{d.title}</span>
@@ -46,6 +49,9 @@ function DocList({ docs, empty, showOwner }: { docs: Doc[]; empty: string; showO
             </span>
             <span className={`rounded-full px-2 py-0.5 text-xs font-medium capitalize ${roleStyle[d.role]}`}>
               {d.role === "owner" ? "Owner" : d.role === "editor" ? "Can edit" : "View only"}
+            </span>
+            <span aria-hidden className="chev text-gray-400">
+              ›
             </span>
           </Link>
         </li>
@@ -94,13 +100,13 @@ export default function Dashboard({ owned, shared }: { owned: Doc[]; shared: Doc
   }
 
   return (
-    <main className="mx-auto max-w-5xl px-4 py-8">
+    <main className="rise mx-auto max-w-5xl px-4 py-8">
       <div className="flex flex-wrap items-center gap-3">
         <h1 className="mr-auto text-2xl font-bold tracking-tight">Documents</h1>
         <button
           onClick={() => fileInput.current?.click()}
           disabled={busy !== null}
-          className="press rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium hover:bg-gray-50 disabled:opacity-60"
+          className="press rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium shadow-sm hover:border-gray-300 hover:bg-gray-50 disabled:opacity-60"
         >
           {busy === "upload" ? "Importing…" : "Upload file"}
         </button>
@@ -115,7 +121,7 @@ export default function Dashboard({ owned, shared }: { owned: Doc[]; shared: Doc
         <button
           onClick={createDoc}
           disabled={busy !== null}
-          className="press rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-60"
+          className="press rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm shadow-blue-600/20 hover:bg-blue-700 disabled:opacity-60"
         >
           {busy === "create" ? "Creating…" : "+ New document"}
         </button>
