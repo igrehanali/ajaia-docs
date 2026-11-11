@@ -5,7 +5,7 @@ Candidate: Muhammad Rehan Ali
 ## Links
 
 - **Live app:** https://ajaia-docs-six-phi.vercel.app
-- **Walkthrough video:** see `VIDEO_URL.txt`
+- **Walkthrough video (Loom):** https://www.loom.com/share/9e5ae02357504fafb0680fb011c48a31
 - **Source code (GitHub):** https://github.com/igrehanali/ajaia-docs
 - **Google Drive folder:** https://drive.google.com/drive/folders/1WH8FeQAmWwVW82Es_sQvLa3aZ7d-iVA8
 

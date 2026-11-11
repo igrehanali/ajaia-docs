@@ -4,6 +4,7 @@ A lightweight collaborative document editor: create, edit (rich text), import fi
 
 **Live app:** https://ajaia-docs-six-phi.vercel.app  
 **Source:** https://github.com/igrehanali/ajaia-docs  
+**Walkthrough video:** https://www.loom.com/share/9e5ae02357504fafb0680fb011c48a31  
 **Demo users** (no password, pick one on the sign-in screen, switch any time from the top bar):
 
 | User | Email | Seed data |
