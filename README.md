@@ -2,7 +2,8 @@
 
 A lightweight collaborative document editor: create, edit (rich text), import files, and share documents between users.
 
-**Live app:** https://ajaia-docs-six-phi.vercel.app
+**Live app:** https://ajaia-docs-six-phi.vercel.app  
+**Source:** https://github.com/igrehanali/ajaia-docs  
 **Demo users** (no password, pick one on the sign-in screen, switch any time from the top bar):
 
 | User | Email | Seed data |
